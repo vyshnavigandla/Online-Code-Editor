@@ -1,0 +1,367 @@
+/* ============================================================
+   assets/style.css — Global styles for Ace Online IDE
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+:root {
+  /* Light Theme */
+  --bg-base: #ffffff;
+  --bg-surface: #f8f9fa;
+  --bg-overlay: #f1f3f5;
+
+  --border: #d0d7de;
+  --border-sub: #e5e7eb;
+
+  --text-main: #24292f;
+  --text-muted: #57606a;
+
+  --accent: #0969da;
+  --green: #1a7f37;
+  --red: #cf222e;
+
+  --bg-danger-sub: rgba(207, 34, 46, 0.08);
+  --border-danger: rgba(207, 34, 46, 0.3);
+
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --topbar-h: 52px;
+  --statusbar-h: 28px;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}
+html, body {
+  height: 100%;
+  background: var(--bg-base);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ── Top Bar Layout ────────────────────────────────────────── */
+.topbar {
+  height: var(--topbar-h);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; 
+  align-items: center; 
+  gap: 20px; 
+  padding: 0 16px;
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  z-index: 100;
+}
+
+.topbar-brand { 
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
+}
+
+.brand-icon {
+  width: 28px; 
+  height: 28px; 
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #58a6ff, #7c3aed);
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  color: #fff;
+}
+
+.brand-name { 
+  font-weight: 700; 
+  font-size: 15px; 
+  letter-spacing: .02em; 
+}
+
+.topbar-controls { 
+  display: flex; 
+  align-items: center; 
+  gap: 16px; 
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ctrl-label { 
+  font-size: 11px; 
+  color: var(--text-muted); 
+  text-transform: uppercase; 
+  letter-spacing: .05em; 
+  user-select: none;
+}
+
+.ctrl-select {
+  background: var(--bg-overlay); 
+  border: 1px solid var(--border);
+  color: var(--text-main); 
+  border-radius: var(--radius-md); 
+  padding: 4px 24px 4px 10px;
+  font-size: 12px; 
+  font-family: var(--font-mono); 
+  cursor: pointer; 
+  outline: none;
+  transition: border-color .15s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='3'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+
+.ctrl-select:focus { border-color: var(--accent); }
+
+.topbar-nav { 
+  margin-left: auto; 
+  display: flex; 
+  gap: 6px; 
+}
+
+.nav-link {
+  padding: 6px 14px; 
+  border-radius: var(--radius-md); 
+  font-size: 12px;
+  text-decoration: none; 
+  color: var(--text-muted); 
+  font-weight: 600;
+  transition: color .15s, background-color .15s;
+}
+
+.nav-link:hover { color: var(--text-main); background: var(--bg-overlay); }
+.nav-link.active { color: var(--accent); background: rgba(88,166,255,.1); }
+
+/* ── Workspace layouts (Fluid and split views) ────────────── */
+.workspace {
+  display: flex; 
+  position: fixed;
+  top: var(--topbar-h); 
+  bottom: var(--statusbar-h); 
+  left: 0; 
+  right: 0; 
+  overflow: hidden;
+}
+
+.workspace-fluid {
+  position: fixed;
+  top: var(--topbar-h);
+  bottom: var(--statusbar-h);
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+}
+
+.panel { display: flex; flex-direction: column; min-height: 0; }
+.panel-editor { flex: 0 0 60%; border-right: 1px solid var(--border); }
+.panel-right  { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow-y: auto; }
+
+.panel-titlebar {
+  height: 38px; 
+  background: var(--bg-surface); 
+  border-bottom: 1px solid var(--border-sub);
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  padding: 0 14px; 
+  flex-shrink: 0;
+}
+
+.panel-actions, .output-actions {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.traffic-lights { display: flex; gap: 6px; align-items: center; }
+.tl { width: 12px; height: 12px; border-radius: 50%; }
+.tl.red    { background: #ff5f57; }
+.tl.yellow { background: #febc2e; }
+.tl.green  { background: #28c840; }
+
+.file-name { font-size: 12px; font-weight: 600; color: var(--text-main); }
+.version-badge {
+  font-size: 11px; 
+  color: var(--accent);
+  background: rgba(88,166,255,.1); 
+  padding: 2px 8px; 
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+.btn-sm {
+  background: transparent; 
+  border: 1px solid var(--border); 
+  color: var(--text-muted);
+  border-radius: var(--radius-md); 
+  padding: 4px 10px; 
+  font-size: 11px; 
+  cursor: pointer;
+  font-family: var(--font-mono); 
+  transition: all .15s ease;
+}
+.btn-sm:hover { color: var(--text-main); border-color: var(--text-muted); }
+.btn-sm.btn-danger:hover { color: var(--red); border-color: var(--red); background: rgba(248,81,73,0.05); }
+
+#editor { flex: 1; min-height: 0; }
+
+/* ── Interactive Input Form Controls & Validation Blocks ── */
+.stdin-block  { padding: 14px; border-bottom: 1px solid var(--border-sub); background: var(--bg-surface); }
+.block-label-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.block-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
+.hint { font-size: 10px; color: #57606a; text-transform: none; letter-spacing: 0; margin-left: 4px; }
+
+.validation-message { font-size: 11px; color: var(--red); font-weight: 600; }
+.validation-alert { margin: 20px; padding: 14px; background: var(--bg-danger-sub); border: 1px solid var(--border-danger); border-radius: var(--radius-md); color: var(--red); font-size: 13px; }
+
+.stdin-textarea {
+  width: 100%; 
+  background: var(--bg-base); 
+  border: 1px solid var(--border);
+  color: var(--text-main); 
+  border-radius: var(--radius-md); 
+  padding: 8px 12px;
+  font-size: 13px; 
+  font-family: var(--font-mono); 
+  resize: vertical; 
+  outline: none; 
+  line-height: 1.5;
+  transition: border-color .15s ease;
+}
+.stdin-textarea:focus { border-color: var(--accent); }
+
+/* Stdin Invalid Form Input State Trigger */
+.stdin-textarea.invalid { border-color: var(--red); background: rgba(248, 81, 73, 0.02); }
+
+/* ── Runtime Control Layer ────────────────────────────────── */
+.run-block { padding: 14px; border-bottom: 1px solid var(--border-sub); background: var(--bg-surface); }
+.btn-run {
+  width: 100%; 
+  padding: 10px 16px; 
+  border-radius: var(--radius-lg); 
+  border: none;
+  background: linear-gradient(135deg, #238636, #2ea043);
+  color: #fff; 
+  font-size: 13px; 
+  font-weight: 700; 
+  cursor: pointer;
+  font-family: var(--font-mono); 
+  display: flex; 
+  align-items: center;
+  justify-content: center; 
+  gap: 8px; 
+  transition: filter .15s ease; 
+  letter-spacing: .02em;
+}
+.btn-run:hover { filter: brightness(1.1); }
+.btn-run:active { filter: brightness(0.95); }
+.btn-run:disabled { background: var(--bg-overlay) !important; color: var(--text-muted) !important; cursor: not-allowed; filter: none; }
+.run-icon { fill: currentColor; display: flex; align-items: center; }
+
+/* ── System Output Panel Contexts ────────────────────────── */
+.output-block { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.output-titlebar {
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  padding: 0 14px;
+  border-bottom: 1px solid var(--border-sub); 
+  background: var(--bg-surface);
+  height: 38px; 
+  flex-shrink: 0;
+}
+.output-tab {
+  font-size: 11px; 
+  font-weight: 700;
+  text-transform: uppercase; 
+  letter-spacing: .05em;
+  color: var(--text-muted); 
+  border-bottom: 2px solid transparent; 
+  line-height: 36px;
+  user-select: none;
+}
+.output-tab.active { color: var(--text-main); border-bottom-color: var(--accent); }
+.exec-time { font-size: 11px; font-weight: 600; color: var(--green); background: rgba(63,185,80,.1); padding: 2px 8px; border-radius: var(--radius-sm); }
+
+.output-area {
+  flex: 1; 
+  overflow-y: auto; 
+  padding: 16px; 
+  background: var(--bg-base);
+  font-family: var(--font-mono); 
+  font-size: 13px; 
+  line-height: 1.6;
+  white-space: pre-wrap; 
+  word-break: break-all;
+}
+.container-terminal { border-top: none; }
+
+.output-placeholder {
+  display: flex; 
+  flex-direction: column; 
+  align-items: center;
+  justify-content: center; 
+  height: 100%; 
+  min-height: 180px;
+  gap: 12px; 
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+.placeholder-icon { stroke: currentColor; display: flex; align-items: center; }
+
+.output-success { color: var(--green); }
+.output-error   { color: var(--red); }
+.output-status  { font-size: 12px; margin-bottom: 8px; font-weight: 600; }
+.output-status.success { color: var(--green); }
+.output-status.error   { color: var(--red); }
+
+/* ── Application Footer Status Bar ──────────────────────── */
+.statusbar {
+  height: var(--statusbar-h); 
+  background: var(--bg-surface); 
+  border-top: 1px solid var(--border);
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
+  padding: 0 16px;
+  position: fixed; 
+  bottom: 0; 
+  left: 0; 
+  right: 0; 
+  font-size: 11px; 
+  color: var(--text-muted);
+  z-index: 100;
+  user-select: none;
+}
+.statusbar-left, .statusbar-right { display: flex; align-items: center; gap: 16px; }
+.status-item { display: flex; align-items: center; }
+.status-item.highlight { color: var(--text-main); font-weight: 600; }
+.status-indicator { width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; display: inline-block; }
+.status-indicator.active { background: var(--green); box-shadow: 0 0 8px var(--green); }
+
+/* Utility Classes */
+.ml-auto { margin-left: auto; }
+.hidden  { display: none !important; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin { display: inline-block; animation: spin 1s linear infinite; }

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ace Online IDE — Professional Development Environment</title>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.9/ace.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.9/ext-language_tools.min.js"></script>
+  
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+
+  <header class="topbar" role="banner">
+    <div class="topbar-brand">
+      <svg class="brand-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="16 18 22 12 16 6"></polyline>
+        <polyline points="8 6 2 12 8 18"></polyline>
+      </svg>
+      <span class="brand-name">Ace Online IDE</span>
+    </div>
+
+    <div class="topbar-controls" role="toolbar" aria-label="Editor settings">
+      <div class="control-group">
+        <label for="langSelect" class="ctrl-label">Language</label>
+        <select id="langSelect" class="ctrl-select" required aria-required="true"></select>
+      </div>
+
+      <div class="control-group">
+        <label for="themeSelect" class="ctrl-label">Theme</label>
+        <select id="themeSelect" class="ctrl-select" required aria-required="true"></select>
+      </div>
+
+      <div class="control-group">
+        <label for="fontSelect" class="ctrl-label">Font Size</label>
+        <select id="fontSelect" class="ctrl-select">
+          <option value="12">12px</option>
+          <option value="13">13px</option>
+          <option value="14" selected>14px</option>
+          <option value="15">15px</option>
+          <option value="16">16px</option>
+          <option value="18">18px</option>
+          <option value="20">20px</option>
+        </select>
+      </div>
+    </div>
+
+    <nav class="topbar-nav" aria-label="Main navigation">
+      <a href="/" class="nav-link active" aria-current="page">Editor</a>
+      <a href="/kitchen-sink" class="nav-link">Kitchen Sink</a>
+    </nav>
+  </header>
+
+  <main class="workspace" role="main">
+
+    <section class="panel panel-editor" aria-labelledby="fileName">
+      <div class="panel-titlebar">
+        <div class="traffic-lights" aria-hidden="true">
+          <span class="tl red"></span>
+          <span class="tl yellow"></span>
+          <span class="tl green"></span>
+        </div>
+        <h1 id="fileName" class="file-name">main.py</h1>
+        <span id="versionBadge" class="version-badge">Python 3.11</span>
+        
+        <div class="panel-actions">
+          <button id="copyCodeBtn" class="btn-sm" title="Copy code snippet to clipboard" aria-label="Copy source code">Copy</button>
+          <button id="clearCodeBtn" class="btn-sm btn-danger" title="Clear all text from editor" aria-label="Clear source code">Clear</button>
+        </div>
+      </div>
+      
+      <div id="editor" role="textbox" aria-multiline="true" aria-label="Code editor canvas"></div>
+    </section>
+
+    <section class="panel panel-right">
+
+      <div class="stdin-block">
+        <div class="block-label-container">
+          <label for="stdinInput" class="block-label">Standard Input <span class="hint">(stdin)</span></label>
+          <span id="stdinValidationError" class="validation-message hidden" role="alert"></span>
+        </div>
+        <textarea id="stdinInput" class="stdin-textarea" rows="4"
+          placeholder="Provide input for your program execution context..." aria-describedby="stdinValidationError">World</textarea>
+      </div>
+
+      <div class="run-block">
+        <button id="runBtn" class="btn-run" aria-label="Execute program suite">
+          <svg class="run-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          Run Python
+        </button>
+      </div>
+
+      <div class="output-block" aria-live="polite">
+        <div class="output-titlebar">
+          <span class="output-tab active">System Output</span>
+          <span id="execTime" class="exec-time hidden"></span>
+          
+          <div class="output-actions">
+            <button id="copyOutBtn" class="btn-sm hidden" aria-label="Copy output terminal logs">Copy</button>
+            <button id="clearOutBtn" class="btn-sm hidden" aria-label="Clear terminal output window">Clear</button>
+          </div>
+        </div>
+        
+        <div id="outputArea" class="output-area container-terminal">
+          <div class="output-placeholder">
+            <svg class="placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <span>Awaiting execution pipeline context. Press "Run" to process.</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="statusbar" role="contentinfo">
+    <div class="statusbar-left">
+      <span id="statusLang" class="status-item highlight">
+        <span class="status-indicator active"></span> Python Context
+      </span>
+      <span class="status-item">Tab: 2 spaces</span>
+      <span class="status-item">UTF-8</span>
+    </div>
+    <div class="statusbar-right">
+      <span class="status-item">Ace Online IDE · Corporate Suite</span>
+    </div>
+  </footer>
+
+  <script src="texteditor.js"></script>
+  <script src="demo/app.js"></script>
+</body>
+</html>

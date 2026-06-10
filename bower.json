@@ -1,0 +1,10 @@
+{
+  "name": "ace-online-ide",
+  "description": "Browser-based Online Code Editor",
+  "version": "1.0.0",
+  "main": "src/ace.js",
+  "ignore": [
+    "node_modules",
+    "bower_components"
+  ]
+}

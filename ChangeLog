@@ -1,0 +1,14 @@
+CHANGELOG
+=========
+
+v1.0.0 (2024)
+-------------
+- Initial release
+- Browser-based IDE with Ace Editor integration
+- Backend API for code execution simulation (server1.js)
+- Multi-language support: Python, JavaScript, TypeScript, Java, C, C++, Rust, Go
+- Stdin input support
+- Multiple editor themes
+- Adjustable font size
+- index.html: main editor entry point
+- kitchen-sink.html: full demo with all language/theme combinations

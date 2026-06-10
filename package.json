@@ -1,0 +1,18 @@
+{
+  "name": "ace-online-ide",
+  "version": "1.0.0",
+  "description": "Browser-based Online Code Editor using Ace Editor",
+  "main": "server1.js",
+  "scripts": {
+    "start": "node server1.js",
+    "dev": "node server1.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2"
+  },
+  "keywords": ["ace", "editor", "ide", "code", "online"],
+  "author": "",
+  "license": "BSD-3-Clause"
+}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kitchen Sink — Ace Online IDE</title>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.9/ace.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.9/ext-language_tools.min.js"></script>
+  
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    .ks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; }
+    .ks-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; }
+    .ks-card-title { padding: 10px 14px; font-size: 12px; color: #8b949e; border-bottom: 1px solid #21262d; text-transform: uppercase; letter-spacing: .05em; display: flex; align-items: center; gap: 8px; }
+    .ks-card-title .badge { background: rgba(88,166,255,.12); color: #58a6ff; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+    .ks-mini-editor { height: 180px; width: 100%; }
+    .ks-header { padding: 16px 20px 0; }
+    .ks-header h1 { font-size: 22px; font-weight: 700; color: #e6edf3; margin: 0 0 4px; }
+    .ks-header p  { color: #8b949e; font-size: 13px; margin: 0 0 16px; }
+    
+    /* Error / Validation Banner style */
+    .validation-alert { margin: 20px; padding: 14px; background: rgba(248,81,73,0.1); border: 1px solid rgba(248,81,73,0.4); border-radius: 6px; color: #ff7b72; font-size: 13px; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <header class="topbar" role="banner">
+    <div class="topbar-brand">
+      <svg class="brand-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="16 18 22 12 16 6"></polyline>
+        <polyline points="8 6 2 12 8 18"></polyline>
+      </svg>
+      <span class="brand-name">Ace Online IDE</span>
+    </div>
+    <nav class="topbar-nav" aria-label="Main navigation">
+      <a href="/" class="nav-link">Editor</a>
+      <a href="/kitchen-sink" class="nav-link active" aria-current="page">Kitchen Sink</a>
+    </nav>
+  </header>
+
+  <main class="workspace-fluid" role="main">
+    <header class="ks-header">
+      <h1>Kitchen Sink Matrix</h1>
+      <p>All supported system compiler environments rendered side-by-side with their standard baseline execution templates.</p>
+    </header>
+
+    <div id="validationBanner" class="validation-alert hidden" role="alert"></div>
+
+    <section class="ks-grid" id="ksGrid" aria-label="Language Runtime Cards"></section>
+  </main>
+
+  <footer class="statusbar" role="contentinfo">
+    <span class="status-item highlight">
+      <span class="status-indicator active" style="background:#58a6ff; width:8px; height:8px; display:inline-block; border-radius:50%; margin-right:6px;"></span>
+      Kitchen Sink Diagnostics
+    </span>
+    <span class="status-item ml-auto">Ace Online IDE · System Architecture</span>
+  </footer>
+
+  <script src="texteditor.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const grid = document.getElementById("ksGrid");
+      const validationBanner = document.getElementById("validationBanner");
+
+      // Robust Core Data Validation Strategy
+      if (typeof LANGUAGES === "undefined" || !Array.isArray(LANGUAGES) || LANGUAGES.length === 0) {
+        validationBanner.textContent = "Data Pipeline Error: The list of supported system languages could not be initialized.";
+        validationBanner.classList.remove("hidden");
+        return;
+      }
+
+      // Populate matrices safely
+      LANGUAGES.forEach((lang, i) => {
+        // Validation constraint check against single array payloads
+        if (!lang.label || !lang.aceMode || typeof lang.template !== "string") {
+          console.warn(`Malformed metadata structure flagged on index array reference: ${i}`);
+          return;
+        }
+
+        const card = document.createElement("article");
+        card.className = "ks-card";
+        card.setAttribute("aria-label", `${lang.label} Syntax Execution Context`);
+        
+        card.innerHTML = `
+          <div class="ks-card-title">
+            <span>${lang.label}</span>
+            <span class="badge" aria-label="Compiler Target Version">${lang.version || 'Unspecified'}</span>
+            <span class="badge" style="background:rgba(63,185,80,.1); color:#3fb950" aria-label="Standard System File Extension">.${lang.ext || 'txt'}</span>
+          </div>
+          <div id="ks-editor-${i}" class="ks-mini-editor" role="textbox" aria-multiline="true" aria-label="${lang.label} Sandbox Editor Canvas"></div>`;
+        
+        grid.appendChild(card);
+
+        // Standardized Ace Engine Setup Pipeline
+        try {
+          const editor = ace.edit(`ks-editor-${i}`);
+          editor.setTheme("ace/theme/monokai");
+          editor.session.setMode(lang.aceMode);
+          editor.setValue(lang.template, -1);
+          
+          // Production Configurations
+          editor.setOptions({
+            showPrintMargin: false,
+            fontSize: "12px",
+            readOnly: false,
+            fontFamily: "'JetBrains Mono', monospace",
+            tabSize: 2,
+            useSoftTabs: true,
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true
+          });
+        } catch (editorError) {
+          console.error(`Failed loading dynamic instance config hook context on token canvas selection id [#ks-editor-${i}]:`, editorError);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
